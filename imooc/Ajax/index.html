@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax</title>
+    <style>
+        *{font-family:Monaco}
+    </style>
+</head>
+<body>
+<h1>员工查询</h1>
+<label for="keyword">请输出员工编号</label>
+<input type="text" id="keyword">
+<button id="search">查询</button>
+<p id="searchResult"></p>
+<h1>员工信息创建</h1>
+<label for="staffName">员工名称</label>
+<input type="text" id="staffName"><br/>
+<label for="staffNumber">员工编号</label>
+<input type="text" id="staffNumber"><br/>
+<label for="staffSex">员工性别</label>
+<select id="staffSex"><option>男</option><option>女</option></select><br/>
+<label for="staffJob">员工职位</label>
+<input type="text" id="staffJob"><br/>
+<button id="save">提交</button>
+<p id="createResult"></p>
+<script>
+    document.getElementById("search").onclick=function(){
+        var request=new XMLHttpRequest();
+        request.open("GET","server.php?number="+document.getElementById("keyword").value);
+        request.send();
+        request.onreadystatechange=function(){
+            if(request.readyState===4){
+                if(request.status===200){
+                    document.getElementById("searchResult").innerHTML=request.responseText;
+                }else{
+                    alert("发生错误"+request.status);
+                }
+            }
+        }
+    }
+    document.getElementById("save").onclick=function(){
+        var request=new XMLHttpRequest();
+        request.open("POST","server.php");
+        var data="name="+document.getElementById("staffName").value
+                +"&number="+document.getElementById("staffNumber").value
+                +"&sex="+document.getElementById("staffSex").value
+                +"&job="+document.getElementById("staffJob").value;
+        request.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+        request.send(data);
+        request.onreadystatechange=function(){
+            if(request.readyState===4){
+                if(request.status===200){
+                    document.getElementById("createResult").innerHTML=request.responseText;
+                }else{
+                    alert("发生错误"+request.status);
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>
